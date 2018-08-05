@@ -1,9 +1,17 @@
 import * as React from "react";
-import Grid from "@material-ui/core/Grid";
 import firebase from "firebase";
 
+import Grid from "@material-ui/core/Grid";
+import Paper from "@material-ui/core/Paper";
+import Tabs from "@material-ui/core/Tabs";
+import Tab from "@material-ui/core/Tab";
+
 import Board from "./Board";
+import Rules from "./Rules";
+import Learn from "./Learn";
 import { isSET, newCards } from "./api";
+
+const tabs = ["Rules", "Learn", "Easy", "Medium", "Hard"];
 
 class App extends React.Component {
   constructor(props) {
@@ -18,8 +26,7 @@ class App extends React.Component {
       localStorage.setItem("set_player_id", this.playerId);
     }
 
-    this.state = { cards: newCards().map(value => ({ value })) };
-    this.startTime = new Date();
+    this.state = { tab: 0 };
   }
 
   handleClick = idx => {
@@ -31,12 +38,17 @@ class App extends React.Component {
         const _cards = cards.map(x => ({ ...x, correct: x.selected }));
         this.setState({ cards: _cards });
         const dbRef = firebase.database().ref("events");
-        dbRef.push().set({
+        const toSet = {
           playerId: this.playerId,
-          time: new Date() - this.startTime
-        });
+          time: new Date() - this.startTime,
+          date: Date.now(),
+          mode: tabs[this.state.tab]
+        };
+        dbRef.push().set(toSet);
         setTimeout(() => {
-          this.setState({ cards: newCards().map(value => ({ value })) });
+          this.setState({
+            cards: newCards(3 * this.state.tab).map(value => ({ value }))
+          });
           this.startTime = new Date();
         }, 1000);
       } else {
@@ -60,28 +72,59 @@ class App extends React.Component {
     }
   };
 
+  changeTab = (_, tab) => {
+    if (tab > 1) {
+      this.setState({ cards: newCards(3 * tab).map(value => ({ value })) });
+      this.startTime = new Date();
+    }
+    this.setState({ tab });
+  };
+
   render() {
-    const { cards } = this.state;
+    const { cards, tab } = this.state;
     return (
       <div
         style={{
           height: "100%",
           width: "100%",
-          backgroundColor: "#fffff0",
-          position: "absolute"
+          backgroundColor: "#bbbbbb",
+          position: "absolute",
+          display: "flex",
+          flexFlow: "column"
         }}
       >
-        <Grid container spacing={0} style={{ marginTop: "5vh" }}>
-          <Grid item xs={1} sm={2} md={3} lg={4} />
-          <Grid item xs={10} sm={8} md={6} lg={4}>
-            <Board
-              cards={cards.map((card, idx) => ({
-                ...card,
-                onClick: () => this.handleClick(idx)
-              }))}
-            />
+        <Paper>
+          <Tabs
+            value={tab}
+            indicatorColor="primary"
+            textColor="primary"
+            onChange={this.changeTab}
+            fullWidth
+          >
+            {tabs.map(label => <Tab key={label} label={label} />)}
+          </Tabs>
+        </Paper>
+        <Grid
+          container
+          spacing={0}
+          style={{
+            flex: "1 1 auto"
+          }}
+        >
+          <Grid item xs={"auto"} sm={2} md={3} lg={4} />
+          <Grid item xs={12} sm={8} md={6} lg={4}>
+            {tab === 0 && <Rules />}
+            {tab === 1 && <Learn />}
+            {tab > 1 && (
+              <Board
+                cards={cards.map((card, idx) => ({
+                  ...card,
+                  onClick: () => this.handleClick(idx)
+                }))}
+              />
+            )}
           </Grid>
-          <Grid item xs={1} sm={2} md={3} lg={4} />
+          <Grid item xs={"auto"} sm={2} md={3} lg={4} />
         </Grid>
       </div>
     );

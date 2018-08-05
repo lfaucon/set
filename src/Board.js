@@ -1,14 +1,29 @@
 import * as React from "react";
-import Grid from "@material-ui/core/Grid";
 
 import Card from "./Card";
 
 export default ({ cards }) => (
-  <Grid container spacing={16} style={{ height: "65vh" }}>
+  <div
+    style={{
+      height: "100%",
+      display: "flex",
+      flexFlow: "row wrap",
+      justifyContent: "center",
+      alignContent: "center",
+      alignItems: "center"
+    }}
+  >
     {cards.map(card => (
-      <Grid key={card.value} item xs={4}>
-        <Card {...card} />
-      </Grid>
+      <Card
+        key={card.value}
+        {...card}
+        style={{
+          width: "29%",
+          height: "22%",
+          margin: "1%",
+          flex: "0 0 auto"
+        }}
+      />
     ))}
-  </Grid>
+  </div>
 );

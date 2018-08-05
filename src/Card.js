@@ -43,7 +43,7 @@ const Pattern = ({ value, stroke }) => (
   </pattern>
 );
 
-export default ({ value, selected, correct, wrong, onClick }) => {
+export default ({ value, selected, correct, wrong, onClick, style }) => {
   const [a, b, c, d] = decode(value);
   const color = ["#bb3333", "#33bb33", "#3333bb"][a];
   const filling = [color, "url(#hatch" + value + ")", "#ffffff00"][b];
@@ -52,15 +52,14 @@ export default ({ value, selected, correct, wrong, onClick }) => {
   return (
     <div
       style={{
-        backgroundColor: "#fefefe",
-        width: "100%",
-        height: "19vh",
-        border: selected ? "solid red 4px" : "solid black 4px",
+        border: selected ? "solid red 3px" : "solid black 3px",
         borderRadius: "6%",
         display: "flex",
         flexDirection: "column",
         justifyContent: "center",
-        alignItems: "center"
+        alignItems: "center",
+        backgroundColor: "#fafafa",
+        ...style
       }}
       onClick={onClick}
     >

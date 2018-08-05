@@ -35,9 +35,9 @@ const hasSet = cards => {
   return b;
 };
 
-export const newCards = () => {
+export const newCards = size => {
   const cards = [];
-  while (cards.length < 12) {
+  while (cards.length < size) {
     const val = Math.floor(81 * Math.random());
     if (!cards.includes(val)) {
       cards.push(val);
