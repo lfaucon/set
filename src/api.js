@@ -5,6 +5,26 @@ export const decode = card => [
   Math.floor(card / 27) % 3
 ];
 
+const shuffle = array => {
+  let currentIndex = array.length;
+  let temporaryValue;
+  let randomIndex;
+
+  // While there remain elements to shuffle...
+  while (0 !== currentIndex) {
+    // Pick a remaining element...
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex -= 1;
+
+    // And swap it with the current element.
+    temporaryValue = array[currentIndex];
+    array[currentIndex] = array[randomIndex];
+    array[randomIndex] = temporaryValue;
+  }
+
+  return array;
+};
+
 export const encode = ([a, b, c, d]) => a + 3 * b + 9 * c + 27 * d;
 
 export const isSET = ([card1, card2, card3]) => {
@@ -47,6 +67,5 @@ export const newCards = size => {
   if (!hasSet(cards)) {
     cards[0] = completeSET(cards[1], cards[2]);
   }
-
-  return cards.sort(() => 0.5 - Math.random());
+  return shuffle(cards);
 };

@@ -33,26 +33,27 @@ class App extends React.Component {
     const cards = [...this.state.cards];
     cards[idx].selected = !cards[idx].selected;
     const selectedCards = cards.filter(card => card.selected);
+
     if (selectedCards.length === 3) {
       if (isSET(selectedCards.map(c => c.value))) {
-        const _cards = cards.map(x => ({ ...x, correct: x.selected }));
+        const _cards = cards.map(x => ({ ...x, correct: true }));
         this.setState({ cards: _cards });
         const dbRef = firebase.database().ref("events");
-        const toSet = {
+        const toDatabase = {
           playerId: this.playerId,
           time: new Date() - this.startTime,
           date: Date.now(),
           mode: tabs[this.state.tab]
         };
-        dbRef.push().set(toSet);
+        dbRef.push().set(toDatabase);
         setTimeout(() => {
-          this.setState({
-            cards: newCards(3 * this.state.tab).map(value => ({ value }))
-          });
+          const cards = newCards(3 * this.state.tab).map(value => ({ value }));
+          console.log(cards);
+          this.setState({ cards });
           this.startTime = new Date();
-        }, 1000);
+        }, 2000);
       } else {
-        const _cards = cards.map(x => ({ ...x, wrong: x.selected }));
+        const _cards = cards.map(x => ({ ...x, wrong: true }));
         this.setState({ cards: _cards });
         setTimeout(
           () =>
@@ -73,8 +74,11 @@ class App extends React.Component {
   };
 
   changeTab = (_, tab) => {
+    console.log(this.state);
     if (tab > 1) {
-      this.setState({ cards: newCards(3 * tab).map(value => ({ value })) });
+      const cards = newCards(3 * tab).map(value => ({ value }));
+      console.log(cards);
+      this.setState({ cards });
       this.startTime = new Date();
     }
     this.setState({ tab });
@@ -101,7 +105,9 @@ class App extends React.Component {
             onChange={this.changeTab}
             fullWidth
           >
-            {tabs.map(label => <Tab key={label} label={label} />)}
+            {tabs.map(label => (
+              <Tab key={label} label={label} />
+            ))}
           </Tabs>
         </Paper>
         <Grid

@@ -58,13 +58,18 @@ export default ({ value, selected, correct, wrong, onClick, style }) => {
         flexDirection: "column",
         justifyContent: "center",
         alignItems: "center",
-        backgroundColor: "#fafafa",
+        backgroundColor: selected
+          ? "#fafafa"
+          : wrong
+            ? "#ff666644"
+            : correct
+              ? "#66ff6644"
+              : "#fafafa",
         ...style
       }}
       onClick={onClick}
     >
-      {!correct &&
-        !wrong &&
+      {((!correct && !wrong) || selected) &&
         new Array(c + 1).fill().map((_, idx) => (
           <svg
             key={idx}
@@ -77,8 +82,6 @@ export default ({ value, selected, correct, wrong, onClick, style }) => {
             <Pattern value={value} stroke={color} />
           </svg>
         ))}
-      {correct && <span>CORRECT</span>}
-      {wrong && <span>WRONG</span>}
     </div>
   );
 };
