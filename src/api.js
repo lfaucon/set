@@ -69,3 +69,26 @@ export const newCards = size => {
   }
   return shuffle(cards);
 };
+
+export const getRandomTriplet = isSet => {
+  const r = () => Math.floor(3 * Math.random());
+  const f = (x1, x2) => x1 * 1 + x2 * 27;
+
+  if (isSet) {
+    const [a1, a2] = [r(), r()];
+    const [b1, b2] = [r(), r()];
+    const [c1, c2] = [(6 - a1 - b1) % 3, (6 - a2 - b2) % 3];
+
+    const f = (x1, x2) => x1 * 1 + x2 * 27;
+    return [f(a1, a2), f(b1, b2), f(c1, c2)];
+  } else {
+    while (true) {
+      const [a1, a2] = [r(), r()];
+      const [b1, b2] = [r(), r()];
+      const [c1, c2] = [r(), r()];
+
+      const triplet = [f(a1, a2), f(b1, b2), f(c1, c2)];
+      if (!isSET(triplet)) return triplet;
+    }
+  }
+};
