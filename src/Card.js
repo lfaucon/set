@@ -48,7 +48,7 @@ export default ({ value, selected, correct, wrong, onClick, style }) => {
   const color = ["#bb3333", "#33bb33", "#3333bb"][a];
   const filling = [color, "url(#hatch" + value + ")", "#ffffff00"][b];
   const number = c + 1;
-  const Shape = [Diamond, Oval, Worm][d];
+  const Shape = [Oval, Diamond, Worm][d];
   return (
     <div
       style={{
