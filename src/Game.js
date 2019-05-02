@@ -18,14 +18,13 @@ class App extends React.Component {
 
     const playerId = localStorage.getItem("set_player_id");
     if (playerId) {
-      console.log(playerId);
       this.playerId = playerId;
     } else {
       this.playerId = Math.floor(Math.random() * 0x1000000).toString(16);
       localStorage.setItem("set_player_id", this.playerId);
     }
-
-    this.state = { tab: 0 };
+    this.startTime = new Date();
+    this.state = { tab: 1, cards: newCards(6).map(value => ({ value })) };
   }
 
   handleClick = idx => {
@@ -46,8 +45,9 @@ class App extends React.Component {
         };
         dbRef.push().set(toDatabase);
         setTimeout(() => {
-          const cards = newCards(3 * this.state.tab).map(value => ({ value }));
-          console.log(cards);
+          const cards = newCards(3 * (this.state.tab + 1)).map(value => ({
+            value
+          }));
           this.setState({ cards });
           this.startTime = new Date();
         }, 2000);
@@ -73,10 +73,8 @@ class App extends React.Component {
   };
 
   changeTab = (_, tab) => {
-    console.log(this.state);
     if (tab > 0) {
       const cards = newCards(3 * (tab + 1)).map(value => ({ value }));
-      console.log(cards);
       this.setState({ cards });
       this.startTime = new Date();
     }
