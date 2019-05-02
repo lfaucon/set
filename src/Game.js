@@ -11,7 +11,7 @@ import Rules from "./Rules";
 import Learn from "./Learn";
 import { isSET, newCards } from "./api";
 
-const tabs = ["Rules", "Learn", "Easy", "Medium", "Hard"];
+const tabs = ["Rules", "Easy", "Medium", "Hard"];
 
 class App extends React.Component {
   constructor(props) {
@@ -75,8 +75,8 @@ class App extends React.Component {
 
   changeTab = (_, tab) => {
     console.log(this.state);
-    if (tab > 1) {
-      const cards = newCards(3 * tab).map(value => ({ value }));
+    if (tab > 0) {
+      const cards = newCards(3 * (tab + 1)).map(value => ({ value }));
       console.log(cards);
       this.setState({ cards });
       this.startTime = new Date();
@@ -110,28 +110,17 @@ class App extends React.Component {
             ))}
           </Tabs>
         </Paper>
-        <Grid
-          container
-          spacing={0}
-          style={{
-            flex: "1 1 auto"
-          }}
-        >
-          <Grid item xs={"auto"} sm={2} md={3} lg={4} />
-          <Grid item xs={12} sm={8} md={6} lg={4}>
-            {tab === 0 && <Rules />}
-            {tab === 1 && <Learn />}
-            {tab > 1 && (
-              <Board
-                cards={cards.map((card, idx) => ({
-                  ...card,
-                  onClick: () => this.handleClick(idx)
-                }))}
-              />
-            )}
-          </Grid>
-          <Grid item xs={"auto"} sm={2} md={3} lg={4} />
-        </Grid>
+        <div className="main-container">
+          {tab === 0 && <Rules />}
+          {tab > 0 && (
+            <Board
+              cards={cards.map((card, idx) => ({
+                ...card,
+                onClick: () => this.handleClick(idx)
+              }))}
+            />
+          )}
+        </div>
       </div>
     );
   }

@@ -67,10 +67,10 @@ let NEGATIVE_IDX = 0;
 const getHandPickedTriplet = isSet => {
   if (isSet) {
     POSITIVE_IDX += 1;
-    return POSITIVE_EXAMPLES2[POSITIVE_IDX - 1];
+    return POSITIVE_EXAMPLES[POSITIVE_IDX - 1];
   } else {
     NEGATIVE_IDX += 1;
-    return NEGATIVE_EXAMPLES2[NEGATIVE_IDX - 1];
+    return NEGATIVE_EXAMPLES[NEGATIVE_IDX - 1];
   }
 };
 

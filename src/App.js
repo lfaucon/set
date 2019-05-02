@@ -8,7 +8,7 @@ import Stats from "./Stats";
 
 class App extends React.Component {
   state = {
-    view: "learn"
+    view: "game"
   };
 
   render() {

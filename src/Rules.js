@@ -200,7 +200,7 @@ class TextMobileStepper extends React.Component {
 
     return (
       <div className={classes.root}>
-        <Paper className={classes.content}>{tutorialSteps[activeStep]}</Paper>
+        {/* <Paper className={classes.content}>{tutorialSteps[activeStep]}</Paper>
         <MobileStepper
           steps={maxSteps}
           position="static"
@@ -224,7 +224,11 @@ class TextMobileStepper extends React.Component {
               Back
             </Button>
           }
-        />
+        /> */}
+        <span style={{ margin: "12px", fontSize: "120%" }}>
+          You can read up the rules on{" "}
+          <a href="https://en.wikipedia.org/wiki/Set_(card_game)">wikipedia</a>
+        </span>
       </div>
     );
   }

@@ -24,3 +24,10 @@ body,
 .cursornotallowed {
   cursor: not-allowed;
 }
+
+.main-container {
+  height: calc(100% - 48px);
+  width: 100%;
+  max-width: 500px;
+  margin: auto;
+}
